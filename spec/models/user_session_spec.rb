@@ -11,7 +11,7 @@ describe UserSession do
 
   it "checks to see that the Rubycas plugin is installed before persisting" do
     user_session = UserSession.new
-    has_plugin = user_session.send :cas_defined?
+    has_plugin = user_session.send :drc_defined?
     has_plugin.should == (CASClient::Frameworks::Rails::Filter.config.nil? ? false : true)
   end
 

@@ -1,9 +1,9 @@
-AuthlogicCas
+AuthlogicDRC
 ============
 
-AuthlogicCas is a CAS (a cross-site authentication system designed at Yale for single sign-on authentication) add-on for the Authlogic authentication system.
+AuthlogicDRC is a DRC (DeRose Connect) add-on for the Authlogic authentication system.
 
-This extension requires the Rubycas-client plugin and a working CAS server with which it will communicate for CAS authentication.  You can get this plugin at http://code.google.com/p/rubycas-client/  By installing and configuring your CAS client as outlined in the Rubycas-client documentation, the session variable, session[:cas_user], containing the login credentials of a CAS-authenticated user, will be presented to this adapter.
+This extension requires the DRCClient gem and a working DRC server with which it will communicate for authentication.  You can get this plugin at http://github.com/dwaynemac/drc_client.
 
 When using this extension, calls to persist your Authlogic session should work seamlessly, such as:
 
@@ -11,12 +11,19 @@ UserSession.find
 
 You will need to add a session persistence before_filter in your controller like
 
-before_filter CASClient::Frameworks::Rails::Filter
+before_filter DRCClient.filter
 
  or
 
-before_filter CASClient::Frameworks::Rails::GatewayFilter
+before_filter DRCClient.filter(:gateway => true)
 
-to set session[:cas_user] for use with this add-on.
+to set current_drc_user for use with this add-on.
+
+Copyright (c) 2010 Dwayne Macgowan, released under the MIT license
+
+============================
+Code based on authlogic_cas:
+
+http://github.com/thurisaz/authlogic_cas
 
 Copyright (c) 2009 Rich Davis, released under the MIT license

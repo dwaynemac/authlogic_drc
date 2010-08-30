@@ -1,4 +1,4 @@
-module AuthlogicCas
+module AuthlogicDRC
   module Session
     def self.included(klass)
       klass.class_eval do
@@ -10,7 +10,7 @@ module AuthlogicCas
       def self.included(klass)
         klass.class_eval do
           persist.reject{|cb| [:persist_by_params,:persist_by_session,:persist_by_http_auth].include?(cb.method)}
-          persist :persist_by_cas, :if => :authenticating_with_cas?
+          persist :persist_by_drc, :if => :authenticating_with_drc?
         end
       end
 
@@ -21,7 +21,7 @@ module AuthlogicCas
       # end
 
       def persist_by_cas
-        session_key = CASClient::Frameworks::Rails::Filter.client.username_session_key
+        session_key = CASClient::Frameworks::Rails::Filter.client.username_session_key # TODO wrap in DRCClient
 
         unless controller.session[session_key].blank?
           self.attempted_record = search_for_record("find_by_#{klass.login_field}", controller.session[session_key])
@@ -29,15 +29,15 @@ module AuthlogicCas
         !self.attempted_record.nil?
       end
 
-      def authenticating_with_cas?
-        attempted_record.nil? && errors.empty? && cas_defined?
+      def authenticating_with_drc?
+        attempted_record.nil? && errors.empty? && drc_defined?
       end
 
       private
 
       #todo: validate that cas filters have run.  Authlogic controller adapter doesn't provide access to the filter_chain
-      def cas_defined?
-        defined?(CASClient::Frameworks::Rails::Filter) && !CASClient::Frameworks::Rails::Filter.config.nil?
+      def drc_defined?
+        defined?(DRCClient) && !DRCClient.config.nil?
       end
     end
   end
