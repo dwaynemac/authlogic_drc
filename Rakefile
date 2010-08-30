@@ -1,6 +1,8 @@
+require 'rubygems' 
 require 'rake'
 require 'rake/testtask'
 require 'rake/rdoctask'
+require 'echoe'
 
 desc 'Default: run unit tests.'
 task :default => :test
@@ -21,3 +23,14 @@ Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.rdoc_files.include('README')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
+
+Echoe.new('authlogic_drc', '0.1.0') do |p|
+  p.description     = "Authlogic Add-on for DRC"
+  p.url             = "http://github.com/dwaynemac/authlogic_drc"
+  p.author          = "Dwayne Macgowan"
+  p.email           = "dwaynemac@gmail.com"
+#  p.ignore_pattern  = ["tmp/*", "script/*"]
+  p.development_dependencies = ['drc_client']
+end
+
+Dir["#{File.dirname(__FILE__)}/tasks/*.rake"].sort.each { |ext| load ext }
