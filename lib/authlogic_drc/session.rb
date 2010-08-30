@@ -20,7 +20,7 @@ module AuthlogicDRC
       #   super
       # end
 
-      def persist_by_cas
+      def persist_by_drc
         session_key = CASClient::Frameworks::Rails::Filter.client.username_session_key # TODO wrap in DRCClient
 
         unless controller.session[session_key].blank?
